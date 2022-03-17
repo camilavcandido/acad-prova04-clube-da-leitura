@@ -23,6 +23,9 @@ namespace ClubeLeitura
             int indiceEmprestimo = 0;
             int controlaIdEmprestimo = 1;
 
+            Reserva[] arrayReserva = new Reserva[100];
+            int indiceReserva = 0;
+            int controlaIdReserva = 1;
 
             //menu
             do
@@ -65,7 +68,20 @@ namespace ClubeLeitura
 
 
                     case "10":
-                        Environment.Exit(0);
+                        string opcaoMenuReserva = menuReserva();
+                        if (opcaoMenuReserva == "1")
+                        {
+                            CadastrarReserva(arrayReserva, arrayEmprestimo, arrayAmigo, arrayRevista, ref indiceReserva, ref controlaIdReserva);
+
+                        }
+                        else if (opcaoMenuReserva == "2")
+                        {
+                            ExibirReservas(arrayReserva);
+                        } else if (opcaoMenuReserva == "3"){
+                            EmprestimoReserva(arrayReserva, arrayEmprestimo, ref indiceEmprestimo, ref controlaIdEmprestimo);
+
+                        }
+
                         break;
 
                     default:
@@ -91,7 +107,7 @@ namespace ClubeLeitura
                 "\n7 - Cadastrar Emprestimo" +
                 "\n8 - Visualizar os Emprestimentos Cadastrados" +
                 "\n9 - Editar Emprestimo" +
-                "\n10 - Sair");
+                "\n10 - RESERVA");
 
             ApresentaMensagem("Escolha uma opção: ", ConsoleColor.Blue);
             opcaoMenu = Console.ReadLine();
@@ -426,10 +442,11 @@ namespace ClubeLeitura
                         break;
                     }
                     string status;
-                    if (arrayEmprestimo[i]!=null && arrayEmprestimo[i].statusDevolucao == false)
+                    if (arrayEmprestimo[i] != null && arrayEmprestimo[i].statusDevolucao == false)
                     {
                         status = "Pendente";
-                    } else
+                    }
+                    else
                     {
                         status = "Devolvido";
                     }
@@ -461,8 +478,8 @@ namespace ClubeLeitura
                             if (arrayEmprestimo[y] != null && arrayEmprestimo[y].statusDevolucao == false)
                             {
 
-                                Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", 
-                                    arrayEmprestimo[y].idEmprestimo, arrayEmprestimo[y].nome.nomeAmigo, 
+                                Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
+                                    arrayEmprestimo[y].idEmprestimo, arrayEmprestimo[y].nome.nomeAmigo,
                                     arrayEmprestimo[y].revista.tipoColecaoRevista, arrayEmprestimo[y].dataEmprestimo,
                                     arrayEmprestimo[y].dataDevolucao, "Pendente");
 
@@ -501,11 +518,12 @@ namespace ClubeLeitura
                     int opcao;
                     Console.WriteLine("Digite 1 para confirmar a Devolução da Revista ou 0 para sair ");
                     opcao = int.Parse(Console.ReadLine());
-                    if(opcao == 1)
+                    if (opcao == 1)
                     {
-                    arrayEmprestimo[i].statusDevolucao = true;
+                        arrayEmprestimo[i].statusDevolucao = true;
 
-                    } else
+                    }
+                    else
                     {
                         break;
                     }
@@ -518,24 +536,151 @@ namespace ClubeLeitura
             Console.Clear();
         }
 
+        static string menuReserva()
+        {
+            Console.WriteLine("RESERVA");
+            Console.WriteLine("1 - Cadastrar Reserva | 2 - Visualizar Reservas | 3 - Efetuar Empréstimo");
+            Console.Write("Escolha uma opção: ");
+            string opcao = Console.ReadLine();
+            return opcao;
+        }
+
+        static void CadastrarReserva(Reserva[] arrayReserva, Emprestimo[] arrayEmprestimo,
+            Amigo[] arrayAmigo, Revista[] arrayRevista,
+            ref int indiceReserva, ref int controlaIdReserva)
+        {
+            Console.WriteLine("Cadastrar Reserva");
+            bool amigoExiste = false;
+            bool revistaExiste = false;
+            int idAmigo;
+            int idRevista;
+
+            Reserva reserva = new Reserva();
+            reserva.idReserva = controlaIdReserva;
+
+            //amigo
+            while (amigoExiste == false)
+            {
+                Console.Write("ID do Amigo: ");
+                idAmigo = int.Parse(Console.ReadLine());
+
+                for (int i = 0; i < arrayAmigo.Length; i++)
+                {
+                    if (arrayAmigo[i] != null && arrayAmigo[i].idAmigo == idAmigo)
+                    {
+                        reserva.nome = arrayAmigo[i];
+                        amigoExiste = true;
+                        break;
+                    }
+
+                }
+            }
+            //reserva
+            while (revistaExiste == false)
+            {
+                Console.Write("ID da Revista: ");
+                idRevista = int.Parse(Console.ReadLine());
+
+                for (int y = 0; y < arrayRevista.Length; y++)
+                {
+                    if (arrayRevista[y] != null && idRevista == arrayRevista[y].idRevista)
+                    {
+                        reserva.revista = arrayRevista[y];
+                        revistaExiste = true;
+                        break;
+                    }
+
+                }
+            }
+
+            reserva.dataReserva = DateTime.Now;
+            //prazo
+            DateTime prazoReserva = DateTime.Now;
+
+            reserva.prazoReserva = prazoReserva.AddDays(2);
+
+            reserva.statusReserva = "Válida";
+
+            arrayReserva[indiceReserva] = reserva;
+
+            controlaIdReserva++;
+            indiceReserva++;
+
+        }
+
+        static void ExibirReservas(Reserva[] arrayReserva)
+        {
+            Console.WriteLine("EXIBIR Reserva");
+
+            for (int i = 0; i < arrayReserva.Length; i++)
+            {
+                if (arrayReserva[i] == null)
+                {
+                    break;
+                }
+                else
+                {
+                    //verifique se já passou 2 dias e atualiza status da reserva
+
+                    DateTime hoje = new DateTime();
+                    hoje = DateTime.Now;
+
+                    if(arrayReserva[i].statusReserva == "Válida" && hoje.Day  > arrayReserva[i].dataReserva.Day)
+                    {
+                        arrayReserva[i].statusReserva = "Expirada";
+                    }
+
+                    Console.WriteLine("ID: " + arrayReserva[i].idReserva + "AMIGO: " + arrayReserva[i].nome.nomeAmigo +
+                        "REVISTA: " + arrayReserva[i].revista.idRevista +
+                        "DATA RESERVA: " + arrayReserva[i].dataReserva + "PRAZO RESERVA "+arrayReserva[i].prazoReserva+"STATUS RESERVA " + arrayReserva[i].statusReserva);
+                }
+            }
+            Console.ReadLine();
+        }
+
+        static void EmprestimoReserva(Reserva[] arrayReserva, Emprestimo[] arrayEmprestimo, ref int indiceEmprestimo, ref int controlaIdEmprestimo)
+        {
+            Console.WriteLine("Digite o ID da Reserva: ");
+            int idReserva = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < arrayReserva.Length; i++)
+            {
+
+                if (arrayReserva[i] != null && arrayReserva[i].idReserva == idReserva && arrayReserva[i].statusReserva == "Válida")
+                {
+                    Emprestimo emprestimo = new Emprestimo();
+                    emprestimo.idEmprestimo = controlaIdEmprestimo;
+                    emprestimo.nome = arrayReserva[i].nome;
+                    emprestimo.revista = arrayReserva[i].revista;
+
+                    Console.WriteLine("Digite a data do emprestimo: ");
+                    string dataEmprestimo = Console.ReadLine();
+                    Console.WriteLine("Digite a data de devolução: ");
+                    string dataDevolucao = Console.ReadLine();
+
+                    emprestimo.dataEmprestimo = dataEmprestimo;
+                    emprestimo.dataDevolucao = dataDevolucao;
+
+                    arrayEmprestimo[indiceEmprestimo] = emprestimo;
+
+                    arrayReserva[i].statusReserva = "Finalizada";
+                    indiceEmprestimo++;
+                    controlaIdEmprestimo++;
+                }
+
+            }
+        }
 
         //style
 
-        static void ApresentaMensagemEntradaDeDados(string msg, ConsoleColor cor)
-        {
-            Console.ForegroundColor = cor;
-            Console.Write(msg);
-            Console.ResetColor();
 
-        }
+
         static void ApresentaMensagem(string mensagem, ConsoleColor cor)
         {
             Console.ForegroundColor = cor;
             Console.WriteLine(mensagem);
             Console.ResetColor();
         }
-
-
     }
 
 
