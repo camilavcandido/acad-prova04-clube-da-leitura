@@ -8,7 +8,7 @@ namespace ClubeLeitura
         public string nomeResponsavel;
         public string telefone;
         public string endereco;
-
+        public bool possuiMulta;
         public void CadastrarAmigo(Amigo[] arrayAmigo, ref int indiceAmigo, ref int controlaIdAmigo)
         {
             string nomeAmigo, nomeResponsavelAmigo, telefoneAmigo, enderecoAmigo;
@@ -54,7 +54,7 @@ namespace ClubeLeitura
             }
             else
             {
-                Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço");
+                Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço", "Multa");
                 Console.WriteLine("---------------------------------------------------------------------------------");
                 for (int i = 0; i < arrayAmigo.Length; i++)
                 {
@@ -64,7 +64,8 @@ namespace ClubeLeitura
                     }
                     else
                     {
-                        Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10}", arrayAmigo[i].idAmigo, arrayAmigo[i].nomeAmigo, arrayAmigo[i].nomeResponsavel, arrayAmigo[i].telefone, arrayAmigo[i].endereco);
+                        Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", arrayAmigo[i].idAmigo, 
+                            arrayAmigo[i].nomeAmigo, arrayAmigo[i].nomeResponsavel, arrayAmigo[i].telefone, arrayAmigo[i].endereco, arrayAmigo[i].possuiMulta);
 
                     }
                 }

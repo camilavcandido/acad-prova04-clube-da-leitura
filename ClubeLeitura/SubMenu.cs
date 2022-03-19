@@ -3,31 +3,21 @@ namespace ClubeLeitura
 {
     public class SubMenu
     {
+
+        //arrays
         public Categoria[] arrayCategoria = new Categoria[100];
-        public int indiceCategoria = 0;
-        public int controlaIdCategoria = 1;
-
         public Revista[] arrayRevista = new Revista[100];
-        public int indiceRevista = 0;
-        public int controlaIdRevista = 1;
-
         public Caixa[] arrayCaixa = new Caixa[100];
-        public int indiceCaixa = 0;
-        public int controlaNumeroCaixa = 1;
-
-
         public Amigo[] arrayAmigo = new Amigo[100];
-        public int indiceAmigo = 0;
-        public int controleIdAmigo = 1;
-
-
         public Emprestimo[] arrayEmprestimo = new Emprestimo[100];
-        public int indiceEmprestimo = 0;
-        public int controlaIdEmprestimo = 1;
-
         public Reserva[] arrayReserva = new Reserva[100];
-        public int indiceReserva = 0;
-        public int controlaIdReserva = 1;
+        public Multa[] arrayMulta = new Multa[100];
+        //indice do array
+        public int indiceCategoria = 0, indiceRevista = 0, indiceCaixa = 0, indiceAmigo = 0, 
+        indiceEmprestimo = 0, indiceReserva = 0, indiceMulta;
+        //id (é incrementado +1 sempre que uma nova posição do array é preenchida)
+        public int controlaIdCategoria = 1, controlaIdRevista = 1, controlaNumeroCaixa = 1,
+        controleIdAmigo = 1, controlaIdEmprestimo = 1, controlaIdReserva = 1, controlaIdMulta;
 
 
         #region CATEGORIA
@@ -61,7 +51,8 @@ namespace ClubeLeitura
         #region REVISTA
         public void menuRevista()
         {
-            Console.WriteLine("Revista");
+            Console.Clear();
+            Console.WriteLine("Gerenciamento de Revistas");
             Console.WriteLine("1 - Cadastrar Revista | 2 - Visualizar Revistas ");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
@@ -161,7 +152,7 @@ namespace ClubeLeitura
                 emprestimo.ExibirEmprestimo(arrayEmprestimo);
             } else if(opcao == "3")
             {
-                emprestimo.EditarEmprestimo(arrayEmprestimo, arrayAmigo);
+                emprestimo.EditarEmprestimo(arrayEmprestimo, arrayAmigo, arrayMulta,ref indiceMulta, ref  controlaIdMulta);
             }
 
         }
@@ -198,6 +189,32 @@ namespace ClubeLeitura
 
         #endregion;
 
+        //MULTA
+
+        public void menuMulta()
+        {
+            Console.WriteLine("Multa");
+            Console.WriteLine("1 - Visualizar Multas | 2 - Quitar Multa");
+            Console.Write("Escolha uma opção: ");
+            string opcao = Console.ReadLine();
+            RedirecionaMulta(opcao);
+        }
+        public void RedirecionaMulta(string opcao)
+        {
+            Multa multa = new Multa();
+            if (opcao == "1")
+            {
+                multa.ExibirMultas(arrayMulta, arrayEmprestimo, arrayAmigo);
+
+            }
+            else if (opcao == "2")
+            {
+                multa.QuitarMulta(arrayMulta, arrayAmigo, arrayEmprestimo);
+            }
+
+        }
+
+   
         public void ApresentaMensagem(string mensagem, ConsoleColor cor)
         {
             Console.ForegroundColor = cor;

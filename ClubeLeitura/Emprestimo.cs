@@ -11,82 +11,92 @@ namespace ClubeLeitura
         public DateTime dataDevolucaoRealizada;
         public string statusDevolucao;
 
-
         public void CadastrarEmprestimo(Emprestimo[] arrayEmprestimo, Revista[] arrayRevista, Amigo[] arrayAmigo, ref int indiceEmprestimo, ref int controlaIdEmprestimo)
         {
             int idAmigo, idRevista;
             bool amigoExiste = false;
             bool revistaExiste = false;
-
+            bool amigoPossuiMulta = false;
             ApresentaMensagem("\n\t7 - Cadastrar Emprestimo", ConsoleColor.Cyan);
 
 
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.idEmprestimo = controlaIdEmprestimo;
 
-            while (amigoExiste == false)
-            {
-                Console.Write("ID do Amigo: ");
-                idAmigo = int.Parse(Console.ReadLine());
 
-                for (int i = 0; i < arrayAmigo.Length; i++)
+            Console.Write("ID do Amigo: ");
+            idAmigo = int.Parse(Console.ReadLine());
+
+            for (int i = 0; i < arrayAmigo.Length; i++)
+            {
+                if (arrayAmigo[i] != null && arrayAmigo[i].idAmigo == idAmigo && arrayAmigo[i].possuiMulta == true)
                 {
-                    if (arrayAmigo[i] != null && arrayAmigo[i].idAmigo == idAmigo)
+                    amigoPossuiMulta = true;
+                 
+                    if (amigoPossuiMulta)
                     {
-                        emprestimo.nome = arrayAmigo[i];
-                        amigoExiste = true;
+                        ApresentaMensagem("Amigo possuí multa em aberto", ConsoleColor.Red);
                         break;
                     }
-
+                }
+                else if (arrayAmigo[i] != null && arrayAmigo[i].idAmigo == idAmigo)
+                {
+                    emprestimo.nome = arrayAmigo[i];
+                    amigoExiste = true;
+                    break;
                 }
             }
 
-            while (revistaExiste == false)
+            if (amigoExiste)
             {
-                Console.Write("ID da Revista: ");
-                idRevista = int.Parse(Console.ReadLine());
 
-                for (int y = 0; y < arrayRevista.Length; y++)
+                while (revistaExiste == false)
                 {
-                    if (arrayRevista[y] != null && idRevista == arrayRevista[y].idRevista)
+                    Console.Write("ID da Revista: ");
+                    idRevista = int.Parse(Console.ReadLine());
+
+                    for (int y = 0; y < arrayRevista.Length; y++)
                     {
-                        emprestimo.revista = arrayRevista[y];
-                        revistaExiste = true;
-                        break;
+                        if (arrayRevista[y] != null && idRevista == arrayRevista[y].idRevista)
+                        {
+                            emprestimo.revista = arrayRevista[y];
+                            revistaExiste = true;
+                            break;
+                        }
+
                     }
-
                 }
-            }
 
-            DateTime dataEmprestimo = new DateTime();
-            Console.Write("Data do Emprestimo (DD/MM/AAAA): ");
-            dataEmprestimo = Convert.ToDateTime(Console.ReadLine());
-            emprestimo.dataEmprestimo = dataEmprestimo;
+                DateTime dataEmprestimo = new DateTime();
+                Console.Write("Data do Emprestimo (DD/MM/AAAA): ");
+                dataEmprestimo = Convert.ToDateTime(Console.ReadLine());
+                emprestimo.dataEmprestimo = dataEmprestimo;
 
-            DateTime dataDevolucao = new DateTime();
+                DateTime dataDevolucao = new DateTime();
 
 
-            int dias;
-            for (int i = 0; i < arrayRevista.Length; i++)
-            {
-                if (arrayRevista[i] != null)
+                int dias;
+                for (int i = 0; i < arrayRevista.Length; i++)
                 {
-                    dias = arrayRevista[i].categoriaRevista.quantidadeDiasEmprestimo;
-                    dataDevolucao = dataEmprestimo.AddDays(dias);
-                    emprestimo.dataDevolucao = dataDevolucao;
+                    if (arrayRevista[i] != null)
+                    {
+                        dias = arrayRevista[i].categoriaRevista.quantidadeDiasEmprestimo;
+                        dataDevolucao = dataEmprestimo.AddDays(dias);
+                        emprestimo.dataDevolucao = dataDevolucao;
 
+                    }
                 }
+
+                Console.Write("Data de Devolução (DD/MM/AAAA): {0}", dataDevolucao);
+
+
+                arrayEmprestimo[indiceEmprestimo] = emprestimo;
+
+                indiceEmprestimo++;
+                controlaIdEmprestimo++;
+
+                ApresentaMensagem("\nEmprestimo cadastrado com sucesso", ConsoleColor.Green);
             }
-
-            Console.Write("Data de Devolução (DD/MM/AAAA): {0}", dataDevolucao);
-
-
-            arrayEmprestimo[indiceEmprestimo] = emprestimo;
-
-            indiceEmprestimo++;
-            controlaIdEmprestimo++;
-
-            ApresentaMensagem("\nEmprestimo cadastrado com sucesso", ConsoleColor.Green);
             Console.ReadLine();
         }
 
@@ -115,8 +125,13 @@ namespace ClubeLeitura
                         break;
                     }
 
+                    if (arrayEmprestimo[i].statusDevolucao != "No Prazo" && arrayEmprestimo[i].statusDevolucao != "Atrasada")
+                    {
+                        arrayEmprestimo[i].statusDevolucao = "Pendente";
+                    }
+
                     Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
-                        arrayEmprestimo[i].idEmprestimo, arrayEmprestimo[i].nome.nomeAmigo, 
+                        arrayEmprestimo[i].idEmprestimo, arrayEmprestimo[i].nome.nomeAmigo,
                         arrayEmprestimo[i].revista.idRevista, arrayEmprestimo[i].dataEmprestimo,
                         arrayEmprestimo[i].dataDevolucao, arrayEmprestimo[i].statusDevolucao);
 
@@ -170,7 +185,7 @@ namespace ClubeLeitura
             Console.Clear();
         }
 
-        public void EditarEmprestimo(Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo)
+        public void EditarEmprestimo(Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo, Multa[] arrayMulta, ref int indiceMulta, ref int controlaIdMulta)
         {
             Console.WriteLine("Registrar Devolução");
 
@@ -196,26 +211,39 @@ namespace ClubeLeitura
                     {
                         arrayEmprestimo[i].dataDevolucaoRealizada = devolucaoRealizada;
 
-                        if(devolucaoRealizada > arrayEmprestimo[i].dataDevolucao)
+                        if (arrayEmprestimo[i].dataDevolucao < devolucaoRealizada)
                         {
                             arrayEmprestimo[i].statusDevolucao = "Atrasada";
-                        } 
+
+                            //adiciona Multa no arrayMulta
+                            Multa multa = new Multa();
+                            multa.idMulta = controlaIdMulta;
+                            multa.emprestimo = arrayEmprestimo[i];
+                            multa.statusMulta = true;
+                            arrayMulta[indiceMulta] = multa;
+                            //adiciona Multa no array Amigo;
+                            for (int x = 0; x < arrayAmigo.Length; x++)
+                            {
+                                if (arrayAmigo[x] == null)
+                                {
+                                    break;
+                                }
+                                else if (arrayAmigo[x].idAmigo == arrayEmprestimo[i].nome.idAmigo)
+                                {
+                                    arrayAmigo[x].possuiMulta = true;
+                                }
+
+                            }
+                        }
                         else if (devolucaoRealizada <= arrayEmprestimo[i].dataDevolucao)
                         {
                             arrayEmprestimo[i].statusDevolucao = "No Prazo";
-
-                        } else
-                        {
-                            arrayEmprestimo[i].statusDevolucao = "Pendente";
 
                         }
 
 
                     }
-                    else
-                    {
-                        break;
-                    }
+
                 }
 
 

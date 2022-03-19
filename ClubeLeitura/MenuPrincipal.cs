@@ -33,6 +33,9 @@ namespace ClubeLeitura
                     case "6":
                         subMenu.menuCategoria();
                         break;
+                    case "7":
+                        subMenu.menuMulta();
+                        break;
                     default:
                         Console.Clear();
                         break;
@@ -50,7 +53,8 @@ namespace ClubeLeitura
                 "\n3 - AMIGOS" +
                 "\n4 - EMPRESTIMOS" +
                 "\n5 - RESERVAS" +
-                "\n6 - CATEGORIAS");
+                "\n6 - CATEGORIAS" + 
+                "\n7 - MULTAS");
 
             ApresentaMensagem("Escolha uma opção: ", ConsoleColor.Blue);
             opcaoMenu = Console.ReadLine();
@@ -66,7 +70,4 @@ namespace ClubeLeitura
         }
 
     }
-
 }
-
-

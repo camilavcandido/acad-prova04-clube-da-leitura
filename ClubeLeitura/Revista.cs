@@ -123,6 +123,7 @@ namespace ClubeLeitura
 
             Console.ReadLine();
             Console.Clear();
+          
         }
 
         public void ApresentaMensagem(string mensagem, ConsoleColor cor)
