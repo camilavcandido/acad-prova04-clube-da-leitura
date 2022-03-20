@@ -1,51 +1,65 @@
 ﻿using System;
-
 namespace ClubeLeitura
 {
-    internal partial class MenuPrincipal
+    public class MenuPrincipal
     {
-        static void Main(string[] args)
+
+        public static void Main(string[] args)
+        {
+            ExibeMenuPrincipal();
+        }
+
+        public static void ExibeMenuPrincipal()
         {
 
             SubMenu subMenu = new SubMenu();
 
+
             do
             {
-                string opcaoMenu = Menu();
+
+                string opcaoMenu = OpcoesDoMenu();
 
                 switch (opcaoMenu)
                 {
                     case "1":
-                        subMenu.menuRevista();
-                        break;     
+                        Console.Clear();
+                        subMenu.TelaRevista();
+                        break;
                     case "2":
-                        subMenu.menuCaixa();
+                        Console.Clear();
+                        subMenu.TelaCaixa();
                         break;
                     case "3":
-                        subMenu.menuAmigo();
+                        Console.Clear();
+                        subMenu.TelaAmigo();
                         break;
                     case "4":
-                        subMenu.menuEmprestimo();
+                        Console.Clear();
+                        subMenu.TelaEmprestimo();
                         break;
                     case "5":
-                        subMenu.menuReserva();
+                        Console.Clear();
+                        subMenu.TelaReserva();
                         break;
                     case "6":
-                        subMenu.menuCategoria();
+                        Console.Clear();
+                        subMenu.TelaCategoria();
                         break;
                     case "7":
-                        subMenu.menuMulta();
+                        Console.Clear();
+                        subMenu.TelaMulta();
                         break;
                     default:
                         Console.Clear();
                         break;
-                };
+                }
             } while (true);
         }
 
-        static string Menu()
+        public static string OpcoesDoMenu()
         {
-            ApresentaMensagem("\tClube da Leitura", ConsoleColor.Cyan);
+            Notificador.ApresentarMensagem("\tClube da Leitura", ConsoleColor.Cyan);
             string opcaoMenu;
             Console.WriteLine("" +
                 "\n1 - REVISTAS" +
@@ -53,20 +67,12 @@ namespace ClubeLeitura
                 "\n3 - AMIGOS" +
                 "\n4 - EMPRESTIMOS" +
                 "\n5 - RESERVAS" +
-                "\n6 - CATEGORIAS" + 
+                "\n6 - CATEGORIAS" +
                 "\n7 - MULTAS");
 
-            ApresentaMensagem("Escolha uma opção: ", ConsoleColor.Blue);
+            Notificador.ApresentarMensagem("Escolha uma opção: ", ConsoleColor.Blue);
             opcaoMenu = Console.ReadLine();
             return opcaoMenu;
-        }
-
-        static void ApresentaMensagem(string mensagem, ConsoleColor cor)
-        {
-            Console.ForegroundColor = cor;
-            Console.Write(mensagem);
-            Console.ResetColor();
-
         }
 
     }

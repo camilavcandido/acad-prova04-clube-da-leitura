@@ -10,9 +10,7 @@ namespace ClubeLeitura
         public DateTime prazoReserva;
         public string statusReserva;
 
-        public void CadastrarReserva(Reserva[] arrayReserva, Emprestimo[] arrayEmprestimo,
-         Amigo[] arrayAmigo, Revista[] arrayRevista,
-         ref int indiceReserva, ref int controlaIdReserva)
+        public void CadastrarReserva(Reserva[] arrayReserva, Amigo[] arrayAmigo, Revista[] arrayRevista,  ref int indiceReserva, ref int controlaIdReserva)
         {
             Console.WriteLine("Cadastrar Reserva");
             bool amigoExiste = false;
@@ -70,7 +68,9 @@ namespace ClubeLeitura
 
             controlaIdReserva++;
             indiceReserva++;
-
+            Notificador.ApresentarMensagem("Reserva cadastrada!", ConsoleColor.Green);
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void ExibirReservas(Reserva[] arrayReserva)
@@ -79,7 +79,7 @@ namespace ClubeLeitura
 
             if (arrayReserva[0] == null)
             {
-                ApresentaMensagem("Não há reservas", ConsoleColor.Yellow);
+                Notificador.ApresentarMensagem("Não há reservas", ConsoleColor.Yellow);
             }
             else
             {
@@ -150,33 +150,29 @@ namespace ClubeLeitura
                     }
 
                     Console.Write("Data de Devolução (DD/MM/AAAA): {0}", dataDevolucao);
+                    emprestimo.statusDevolucao = "Pendente";
 
                     arrayEmprestimo[indiceEmprestimo] = emprestimo;
 
                     arrayReserva[i].statusReserva = "Finalizada";
                     indiceEmprestimo++;
                     controlaIdEmprestimo++;
+                    Notificador.ApresentarMensagem("Emprestimo cadastrado!", ConsoleColor.Green);
                 }
 
             }
             if (reservaEhValida == false)
             {
 
-                ApresentaMensagem("Reserva inválida", ConsoleColor.Red);
+                Notificador.ApresentarMensagem("Reserva inválida", ConsoleColor.Red);
             }
 
+            
             Console.ReadLine();
             Console.Clear();
 
         }
 
-        public void ApresentaMensagem(string mensagem, ConsoleColor cor)
-        {
-            Console.ForegroundColor = cor;
-            Console.WriteLine(mensagem);
-            Console.ResetColor();
-
-        }
 
     }
 

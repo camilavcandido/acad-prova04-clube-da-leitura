@@ -17,7 +17,7 @@ namespace ClubeLeitura
             bool amigoExiste = false;
             bool revistaExiste = false;
             bool amigoPossuiMulta = false;
-            ApresentaMensagem("\n\t7 - Cadastrar Emprestimo", ConsoleColor.Cyan);
+            Notificador.ApresentarMensagem("\n\t7 - Cadastrar Emprestimo", ConsoleColor.Cyan);
 
 
             Emprestimo emprestimo = new Emprestimo();
@@ -32,10 +32,10 @@ namespace ClubeLeitura
                 if (arrayAmigo[i] != null && arrayAmigo[i].idAmigo == idAmigo && arrayAmigo[i].possuiMulta == true)
                 {
                     amigoPossuiMulta = true;
-                 
+
                     if (amigoPossuiMulta)
                     {
-                        ApresentaMensagem("Amigo possuí multa em aberto", ConsoleColor.Red);
+                        Notificador.ApresentarMensagem("Amigo possuí multa em aberto", ConsoleColor.Red);
                         break;
                     }
                 }
@@ -88,158 +88,177 @@ namespace ClubeLeitura
                 }
 
                 Console.Write("Data de Devolução (DD/MM/AAAA): {0}", dataDevolucao);
-
+                emprestimo.statusDevolucao = "Pendente";
 
                 arrayEmprestimo[indiceEmprestimo] = emprestimo;
 
                 indiceEmprestimo++;
                 controlaIdEmprestimo++;
 
-                ApresentaMensagem("\nEmprestimo cadastrado com sucesso", ConsoleColor.Green);
+                Notificador.ApresentarMensagem("\nEmprestimo cadastrado com sucesso", ConsoleColor.Green);
             }
             Console.ReadLine();
         }
-
         public void ExibirEmprestimo(Emprestimo[] arrayEmprestimo)
         {
             string opcao;
-            ApresentaMensagem("\n\t8 - Visualizar os Emprestimentos Cadastrados", ConsoleColor.Cyan);
-            Console.WriteLine("Filtros: 1 - Emprestimos em Aberto; 2 - Filtrar por Mês");
-
+            Notificador.ApresentarMensagem("\n\t8 - Visualizar os Emprestimentos Cadastrados", ConsoleColor.Cyan);
             if (arrayEmprestimo[0] == null)
             {
-                ApresentaMensagem("\nNão há emprestimos", ConsoleColor.Yellow);
+                Notificador.ApresentarMensagem("\nNão há emprestimos", ConsoleColor.Yellow);
             }
             else
             {
-                #region TODOS OS EMPRESTIMOS 
-                Console.WriteLine("\n\t # Exibindo todos os emprestimos cadastrados\n");
-                Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
-                    "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status");
-                Console.WriteLine("---------------------------------------------------------------------------------");
+                Console.WriteLine("| 1 - Todos os Emprestimos \n| 2 - Emprestimos com devolução pendente \n| 3 - Filtrar por Mês");
 
-                for (int i = 0; i < arrayEmprestimo.Length; i++)
-                {
-                    if (arrayEmprestimo[i] == null)
-                    {
-                        break;
-                    }
-
-                    if (arrayEmprestimo[i].statusDevolucao != "No Prazo" && arrayEmprestimo[i].statusDevolucao != "Atrasada")
-                    {
-                        arrayEmprestimo[i].statusDevolucao = "Pendente";
-                    }
-
-                    Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
-                        arrayEmprestimo[i].idEmprestimo, arrayEmprestimo[i].nome.nomeAmigo,
-                        arrayEmprestimo[i].revista.idRevista, arrayEmprestimo[i].dataEmprestimo,
-                        arrayEmprestimo[i].dataDevolucao, arrayEmprestimo[i].statusDevolucao);
-
-                }
-                #endregion
-
-                Console.Write("\nEscolher filtro: ");
+                Console.Write("Escolha uma opção: ");
                 opcao = Console.ReadLine();
-
-                #region EMPRESTIMOS EM ABERTO
-
-                if (opcao == "1")
+                switch (opcao)
                 {
-                    Console.WriteLine("\n\t # Empréstimos em Aberto\n");
-                    Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status Devolução");
-                    Console.WriteLine("---------------------------------------------------------------------------------");
-
-                    for (int y = 0; y < arrayEmprestimo.Length; y++)
-                    {
-                        if (arrayEmprestimo[y] == null)
-                        {
-                            break;
-                        }
-                        else
-                        {
-
-                            if (arrayEmprestimo[y] != null && arrayEmprestimo[y].dataDevolucaoRealizada == null)
-                            {
-
-
-                                Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
-                                    arrayEmprestimo[y].idEmprestimo, arrayEmprestimo[y].nome.nomeAmigo,
-                                    arrayEmprestimo[y].revista.idRevista, arrayEmprestimo[y].dataEmprestimo,
-                                    arrayEmprestimo[y].dataDevolucao, arrayEmprestimo[y].statusDevolucao);
-
-
-                            }
-
-                        }
-
-
-                    }
+                    case "1":
+                        ExibirTodosEmprestimos(arrayEmprestimo);
+                        break;
+                    case "2":
+                        ExibirEmprestimosPendentes(arrayEmprestimo);
+                        break;
+                    case "3":
+                        ExibirEmprestimosMes(arrayEmprestimo);
+                        break;
                 }
-                #endregion
-
-
-                //filtro mes
-                //to do
             }
             Console.ReadLine();
             Console.Clear();
         }
-
-        public void EditarEmprestimo(Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo, Multa[] arrayMulta, ref int indiceMulta, ref int controlaIdMulta)
+        public void RegistrarDevolucao(Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo, Multa[] arrayMulta, ref int indiceMulta, ref int controlaIdMulta)
         {
+            bool emprestimoExiste = false;
             Console.WriteLine("Registrar Devolução");
-
             int id;
-
 
             Console.WriteLine("Digite o ID do emprestimo");
             id = int.Parse(Console.ReadLine());
 
-            for (int i = 0; i < arrayEmprestimo.Length; i++)
+            for (int a = 0; a < arrayEmprestimo.Length; a++)
             {
-
-                if (arrayEmprestimo[i] != null && arrayEmprestimo[i].idEmprestimo == id)
+                if (arrayEmprestimo[a] != null && arrayEmprestimo[a].idEmprestimo == id)
                 {
-                    int opcao;
-                    DateTime devolucaoRealizada = new DateTime();
-                    Console.WriteLine("Devolução realizada em (DD/MM/AAAA): ");
-                    devolucaoRealizada = Convert.ToDateTime(Console.ReadLine());
+                    emprestimoExiste = true;
+                    break;
+                }
 
-                    Console.WriteLine("Digite 1 para confirmar a Devolução da Revista ou 0 para sair ");
-                    opcao = int.Parse(Console.ReadLine());
-                    if (opcao == 1)
+            }
+
+            if (emprestimoExiste)
+            {
+                for (int i = 0; i < arrayEmprestimo.Length; i++)
+                {
+
+                    if (arrayEmprestimo[i] != null && arrayEmprestimo[i].idEmprestimo == id)
                     {
-                        arrayEmprestimo[i].dataDevolucaoRealizada = devolucaoRealizada;
+                        int opcao;
+                        DateTime devolucaoRealizada = new DateTime();
+                        Console.WriteLine("Devolução realizada em (DD/MM/AAAA): ");
+                        devolucaoRealizada = Convert.ToDateTime(Console.ReadLine());
 
-                        if (arrayEmprestimo[i].dataDevolucao < devolucaoRealizada)
+                        Console.WriteLine("Digite 1 para confirmar a Devolução da Revista ou 0 para sair ");
+                        opcao = int.Parse(Console.ReadLine());
+                        if (opcao == 1)
                         {
-                            arrayEmprestimo[i].statusDevolucao = "Atrasada";
+                            arrayEmprestimo[i].dataDevolucaoRealizada = devolucaoRealizada;
 
-                            //adiciona Multa no arrayMulta
-                            Multa multa = new Multa();
-                            multa.idMulta = controlaIdMulta;
-                            multa.emprestimo = arrayEmprestimo[i];
-                            multa.statusMulta = true;
-                            arrayMulta[indiceMulta] = multa;
-                            //adiciona Multa no array Amigo;
-                            for (int x = 0; x < arrayAmigo.Length; x++)
+                            if (arrayEmprestimo[i].dataDevolucao < devolucaoRealizada)
                             {
-                                if (arrayAmigo[x] == null)
+                                arrayEmprestimo[i].statusDevolucao = "Atrasada";
+
+                                //adiciona Multa no arrayMulta
+                                Multa multa = new Multa();
+                                multa.idMulta = controlaIdMulta;
+                                multa.emprestimo = arrayEmprestimo[i];
+                                multa.statusMulta = true;
+                                arrayMulta[indiceMulta] = multa;
+                                //adiciona Multa no array Amigo;
+                                for (int x = 0; x < arrayAmigo.Length; x++)
                                 {
-                                    break;
+                                    if (arrayAmigo[x] == null)
+                                    {
+                                        break;
+                                    }
+                                    else if (arrayAmigo[x].idAmigo == arrayEmprestimo[i].nome.idAmigo)
+                                    {
+                                        arrayAmigo[x].possuiMulta = true;
+                                    }
+
                                 }
-                                else if (arrayAmigo[x].idAmigo == arrayEmprestimo[i].nome.idAmigo)
-                                {
-                                    arrayAmigo[x].possuiMulta = true;
-                                }
+                            }
+                            else if (devolucaoRealizada <= arrayEmprestimo[i].dataDevolucao)
+                            {
+                                arrayEmprestimo[i].statusDevolucao = "No Prazo";
 
                             }
+                            break;
                         }
-                        else if (devolucaoRealizada <= arrayEmprestimo[i].dataDevolucao)
-                        {
-                            arrayEmprestimo[i].statusDevolucao = "No Prazo";
 
-                        }
+
+                    }
+
+
+                }
+                Notificador.ApresentarMensagem("Devolução registrada!", ConsoleColor.Green);
+
+            }
+
+            if (emprestimoExiste == false)
+            {
+                Notificador.ApresentarMensagem("ID inválido", ConsoleColor.Red);
+            }
+            Console.ReadLine();
+            Console.Clear();
+        }
+        public void ExibirTodosEmprestimos(Emprestimo[] arrayEmprestimo)
+        {
+
+            Console.WriteLine("\n\t #  Todos os emprestimos cadastrados\n");
+            Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
+                "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status");
+            Console.WriteLine("---------------------------------------------------------------------------------");
+
+            for (int i = 0; i < arrayEmprestimo.Length; i++)
+            {
+                if (arrayEmprestimo[i] == null)
+                {
+                    break;
+                }
+
+                Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
+                    arrayEmprestimo[i].idEmprestimo, arrayEmprestimo[i].nome.nomeAmigo,
+                    arrayEmprestimo[i].revista.idRevista, arrayEmprestimo[i].dataEmprestimo,
+                    arrayEmprestimo[i].dataDevolucao, arrayEmprestimo[i].statusDevolucao);
+
+            }
+        }
+        public void ExibirEmprestimosPendentes(Emprestimo[] arrayEmprestimo)
+        {
+            Console.WriteLine("\n\t # Empréstimos em Aberto\n");
+            Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status Devolução");
+            Console.WriteLine("---------------------------------------------------------------------------------");
+
+            for (int y = 0; y < arrayEmprestimo.Length; y++)
+            {
+                if (arrayEmprestimo[y] == null)
+                {
+                    break;
+                }
+                else
+                {
+
+                    if (arrayEmprestimo[y] != null && arrayEmprestimo[y].statusDevolucao == "Pendente")
+                    {
+
+
+                        Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
+                            arrayEmprestimo[y].idEmprestimo, arrayEmprestimo[y].nome.nomeAmigo,
+                            arrayEmprestimo[y].revista.idRevista, arrayEmprestimo[y].dataEmprestimo,
+                            arrayEmprestimo[y].dataDevolucao, arrayEmprestimo[y].statusDevolucao);
 
 
                     }
@@ -247,21 +266,35 @@ namespace ClubeLeitura
                 }
 
 
-
-
             }
-
-            ApresentaMensagem("Devolução registrada!", ConsoleColor.Green);
-            Console.ReadLine();
-            Console.Clear();
         }
 
-        public void ApresentaMensagem(string mensagem, ConsoleColor cor)
+        public void ExibirEmprestimosMes(Emprestimo[] arrayEmprestimo)
         {
-            Console.ForegroundColor = cor;
-            Console.WriteLine(mensagem);
-            Console.ResetColor();
+            bool emprestimoExiste = false;
+            Console.WriteLine("Digite o Mês [ex: 03]: ");
+            int mes = int.Parse(Console.ReadLine());
 
+            for (int i = 0; i < arrayEmprestimo.Length; i++)
+            {
+                if (arrayEmprestimo[i] != null && arrayEmprestimo[i].dataEmprestimo.Month == mes)
+                {
+                    emprestimoExiste = true;
+                    Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status");
+                    Console.WriteLine("---------------------------------------------------------------------------------");
+
+                        Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
+                            arrayEmprestimo[i].idEmprestimo, arrayEmprestimo[i].nome.nomeAmigo,
+                            arrayEmprestimo[i].revista.idRevista, arrayEmprestimo[i].dataEmprestimo,
+                            arrayEmprestimo[i].dataDevolucao, arrayEmprestimo[i].statusDevolucao);
+
+                }
+            }
+
+            if(emprestimoExiste == false)
+            {
+                Notificador.ApresentarMensagem("Não existem emprestimos no mês selecionado", ConsoleColor.Yellow);
+            }
         }
 
     }

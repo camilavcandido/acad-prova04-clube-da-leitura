@@ -69,11 +69,32 @@ namespace ClubeLeitura
 
 
         }
+
+        public void ExibirAmigosComMulta(Amigo[] arrayAmigo)
+        {
+            bool ExisteAmigoComMulta = false;
+            Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço", "Multa");
+            Console.WriteLine("---------------------------------------------------------------------------------");
+            for (int i = 0; i < arrayAmigo.Length; i++)
+            {
+                if (arrayAmigo[i] == null)
+                {
+                    break;
+                }
+                else if (arrayAmigo[i] != null & arrayAmigo[i].possuiMulta == true)
+                {
+                    ExisteAmigoComMulta = true;
+                    Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", arrayAmigo[i].idAmigo,
+                        arrayAmigo[i].nomeAmigo, arrayAmigo[i].nomeResponsavel, arrayAmigo[i].telefone, arrayAmigo[i].endereco, arrayAmigo[i].possuiMulta);
+
+                }
+            }
+            if (ExisteAmigoComMulta == false)
+            {
+                Notificador.ApresentarMensagem("Não há amigo com multa em aberto", ConsoleColor.Green);
+            }
+
+        }
+
     }
 }
-
-
-
-
-//• Visualizar amiguinhos com Multas em aberto
-//• Não pode emprestar para Amiguinhos que tem Multas em aberto
