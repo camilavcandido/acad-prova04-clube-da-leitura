@@ -22,9 +22,10 @@ namespace ClubeLeitura
         //categoria
         public void TelaCategoria()
         {
+            Console.Clear();
             Categoria categoria = new Categoria();
             Notificador.ApresentarTitulo("Gerenciamento de Categorias");
-            Console.WriteLine("| 1 - Cadastrar Categoria \n| 2 - Visualizar Categorias \n| 3 - Visualizar Revistas por Categoria \n| 4 - Retornar para o Menu Principal ");
+            Console.WriteLine("| 1 - Cadastrar Categoria \n| 2 - Visualizar Categorias \n| 3 - Visualizar Revistas por Categoria \n| 4 - Retornar ao Menu Principal ");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
             switch (opcao)
@@ -44,7 +45,7 @@ namespace ClubeLeitura
                     MenuPrincipal.ExibeMenuPrincipal();
                     break;
                 default:
-                    Console.WriteLine("Opção inválida\n");
+                    Notificador.ApresentarMensagem("\nOpção inválida\n", ConsoleColor.DarkRed);
                     TelaCategoria();
                     break;
 
@@ -54,8 +55,9 @@ namespace ClubeLeitura
         //revista
         public void TelaRevista()
         {
+            Console.Clear();
             Revista revista = new Revista();
-            Console.WriteLine("Gerenciamento de Revistas");
+            Notificador.ApresentarTitulo("Gerenciamento de Revistas");
             Console.WriteLine("| 1 - Cadastrar Revista \n| 2 - Visualizar Revistas \n| 3 - Retornar para o Menu Principal");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
@@ -72,7 +74,7 @@ namespace ClubeLeitura
                     MenuPrincipal.ExibeMenuPrincipal();
                     break;
                 default:
-                    Console.WriteLine("Opção inválida\n");
+                    Notificador.ApresentarMensagem("\nOpção inválida\n", ConsoleColor.DarkRed);
                     TelaRevista();
                     break;
 
@@ -83,9 +85,10 @@ namespace ClubeLeitura
         //caixa
         public void TelaCaixa()
         {
+            Console.Clear();
             Caixa caixa = new Caixa();
             Notificador.ApresentarTitulo("Gerenciamento de Caixas");
-            Console.WriteLine("| 1 - Cadastrar Caixa \n| 2 - Visualizar Caixas \n| 3 - Retornar para o Menu Principal ");
+            Console.WriteLine("| 1 - Cadastrar Caixa \n| 2 - Visualizar Caixas \n| 3 - Retornar ao Menu Principal ");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
             switch (opcao)
@@ -94,14 +97,14 @@ namespace ClubeLeitura
                     caixa.CadastrarCaixa(arrayCaixa, ref indiceCaixa, ref controlaNumeroCaixa);
                     break;
                 case "2":
-                    caixa.ExibirCaixasCadastradas(arrayCaixa);
+                    caixa.ExibirCaixas(arrayCaixa);
                     break;
                 case "3":
                     Console.Clear();
                     MenuPrincipal.ExibeMenuPrincipal();
                     break;
                 default:
-                    Console.WriteLine("Opção inválida\n");
+                    Notificador.ApresentarMensagem("\nOpção inválida\n", ConsoleColor.DarkRed);
                     TelaCaixa();
                     break;
 
@@ -111,9 +114,11 @@ namespace ClubeLeitura
         //amigo
         public void TelaAmigo()
         {
+            Console.Clear();
             Amigo amigo = new Amigo();
+
             Notificador.ApresentarTitulo("Gerenciamento de Amigos");
-            Console.WriteLine("| 1 - Cadastrar Amigo \n| 2 - Visualizar Amigos \n| 3 - Retornar para o Menu Principal");
+            Console.WriteLine("| 1 - Cadastrar Amigo \n| 2 - Visualizar Amigos \n| 3 - Retornar ao Menu Principal");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
             switch (opcao)
@@ -129,17 +134,19 @@ namespace ClubeLeitura
                     MenuPrincipal.ExibeMenuPrincipal();
                     break;
                 default:
-                    Console.WriteLine("Opção inválida\n");
+                    Notificador.ApresentarMensagem("\nOpção inválida\n", ConsoleColor.DarkRed);
                     TelaAmigo();
                     break;
             }
         }
- 
+
         //emprestimo
         public void TelaEmprestimo()
         {
+            Console.Clear();
             Emprestimo emprestimo = new Emprestimo();
-            Console.WriteLine("Emprestimo");
+           
+            Notificador.ApresentarTitulo("Gerenciamento de Emprestimos");
             Console.WriteLine("| 1 - Cadastrar Emprestimo \n| 2 - Visualizar Emprestimos \n| 3 - Registrar Devolução \n| 4 - Retornar para o Menu Principal");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
@@ -165,12 +172,14 @@ namespace ClubeLeitura
             }
         }
 
-        //reserva
+        //reserva 
         public void TelaReserva()
         {
+            Console.Clear();
+
             Reserva reserva = new Reserva();
-            Console.WriteLine("Reserva");
-            Console.WriteLine("1 - Cadastrar Reserva | 2 - Visualizar Reservas | 3 - Realizar Emprestimo | 4 - Retornar para o Menu Principal");
+            Notificador.ApresentarTitulo("Gerenciamento de Reservas");
+            Console.WriteLine("| 1 - Cadastrar Reserva \n| 2 - Visualizar Reservas \n| 3 - Realizar Emprestimo \n| 4 - Retornar para o Menu Principal");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();
             switch (opcao)
@@ -198,8 +207,10 @@ namespace ClubeLeitura
         //multa
         public void TelaMulta()
         {
+            Console.Clear();
+            Notificador.ApresentarTitulo("Gerenciamento de Multas");
             Multa multa = new Multa();
-            Console.WriteLine("Multa");
+           
             Console.WriteLine("| 1 - Visualizar Todas as Multas \n| 2 - Visualizar Amigos com Multas em Aberto \n| 3 - Quitar Multa \n| 4 - Retornar para o Menu Principal");
             Console.Write("Escolha uma opção: ");
             string opcao = Console.ReadLine();

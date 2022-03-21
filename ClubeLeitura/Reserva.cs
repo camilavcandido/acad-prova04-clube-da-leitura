@@ -12,12 +12,13 @@ namespace ClubeLeitura
 
         public void CadastrarReserva(Reserva[] arrayReserva, Amigo[] arrayAmigo, Revista[] arrayRevista,  ref int indiceReserva, ref int controlaIdReserva)
         {
-            Console.WriteLine("Cadastrar Reserva");
+
             bool amigoExiste = false;
             bool revistaExiste = false;
             int idAmigo;
             int idRevista;
 
+            Notificador.ApresentarTitulo("\n1 - Cadastrar Reserva");
             Reserva reserva = new Reserva();
             reserva.idReserva = controlaIdReserva;
 
@@ -75,7 +76,7 @@ namespace ClubeLeitura
 
         public void ExibirReservas(Reserva[] arrayReserva)
         {
-            Console.WriteLine("EXIBIR Reserva");
+            Notificador.ApresentarTitulo("\n2 -  Visualizar Reservas");
 
             if (arrayReserva[0] == null)
             {
@@ -84,7 +85,7 @@ namespace ClubeLeitura
             else
             {
                 Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", "ID", "Amigo", "Revista", "Data Reserva", "Prazo", "Status");
-                Console.WriteLine("---------------------------------------------------------------------------------");
+                Console.WriteLine("---------------------------------------------------------------------------------------");
                 for (int i = 0; i < arrayReserva.Length; i++)
                 {
                     if (arrayReserva[i] == null)
@@ -110,11 +111,14 @@ namespace ClubeLeitura
                 }
             }
             Console.ReadLine();
+            Console.Clear();
         }
 
         public void EmprestimoReserva(Reserva[] arrayReserva, Emprestimo[] arrayEmprestimo, Revista[] arrayRevista, ref int indiceEmprestimo, ref int controlaIdEmprestimo)
         {
-            Console.WriteLine("Digite o ID da Reserva: ");
+            Notificador.ApresentarTitulo("\n3 - Realizar Empréstimo");
+
+            Console.Write("Digite o ID da Reserva: ");
             int idReserva = int.Parse(Console.ReadLine());
             bool reservaEhValida = false;
 
@@ -157,7 +161,7 @@ namespace ClubeLeitura
                     arrayReserva[i].statusReserva = "Finalizada";
                     indiceEmprestimo++;
                     controlaIdEmprestimo++;
-                    Notificador.ApresentarMensagem("Emprestimo cadastrado!", ConsoleColor.Green);
+                    Notificador.ApresentarMensagem("\nEmprestimo cadastrado!", ConsoleColor.Green);
                 }
 
             }
@@ -172,7 +176,6 @@ namespace ClubeLeitura
             Console.Clear();
 
         }
-
 
     }
 

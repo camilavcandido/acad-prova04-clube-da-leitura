@@ -13,8 +13,9 @@ namespace ClubeLeitura
 
         public static void ApresentarTitulo(string titulo)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("\t"+titulo);
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(titulo);
             Console.ResetColor();
         }
     }

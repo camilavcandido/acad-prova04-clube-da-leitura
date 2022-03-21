@@ -17,12 +17,10 @@ namespace ClubeLeitura
             bool amigoExiste = false;
             bool revistaExiste = false;
             bool amigoPossuiMulta = false;
-            Notificador.ApresentarMensagem("\n\t7 - Cadastrar Emprestimo", ConsoleColor.Cyan);
-
+            Notificador.ApresentarTitulo("\n\t1 - Cadastrar Emprestimo");
 
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.idEmprestimo = controlaIdEmprestimo;
-
 
             Console.Write("ID do Amigo: ");
             idAmigo = int.Parse(Console.ReadLine());
@@ -98,11 +96,13 @@ namespace ClubeLeitura
                 Notificador.ApresentarMensagem("\nEmprestimo cadastrado com sucesso", ConsoleColor.Green);
             }
             Console.ReadLine();
+            Console.Clear();
         }
         public void ExibirEmprestimo(Emprestimo[] arrayEmprestimo)
         {
             string opcao;
-            Notificador.ApresentarMensagem("\n\t8 - Visualizar os Emprestimentos Cadastrados", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n1 - Visualizar os Emprestimentos Cadastrados");
+
             if (arrayEmprestimo[0] == null)
             {
                 Notificador.ApresentarMensagem("\nNão há emprestimos", ConsoleColor.Yellow);
@@ -122,20 +122,22 @@ namespace ClubeLeitura
                         ExibirEmprestimosPendentes(arrayEmprestimo);
                         break;
                     case "3":
-                        ExibirEmprestimosMes(arrayEmprestimo);
-                        break;
-                }
+                    ExibirEmprestimosMes(arrayEmprestimo);
+                    break;
             }
-            Console.ReadLine();
+        }
+        Console.ReadLine();
             Console.Clear();
         }
         public void RegistrarDevolucao(Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo, Multa[] arrayMulta, ref int indiceMulta, ref int controlaIdMulta)
         {
             bool emprestimoExiste = false;
-            Console.WriteLine("Registrar Devolução");
             int id;
 
-            Console.WriteLine("Digite o ID do emprestimo");
+            Notificador.ApresentarTitulo("\n3 - Registrar Devolução");
+
+
+            Console.Write("Digite o ID do emprestimo: ");
             id = int.Parse(Console.ReadLine());
 
             for (int a = 0; a < arrayEmprestimo.Length; a++)
@@ -217,10 +219,10 @@ namespace ClubeLeitura
         public void ExibirTodosEmprestimos(Emprestimo[] arrayEmprestimo)
         {
 
-            Console.WriteLine("\n\t #  Todos os emprestimos cadastrados\n");
+           Notificador.ApresentarTitulo("\n\t #1  Todos os empréstimos cadastrados\n");
             Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}",
                 "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status");
-            Console.WriteLine("---------------------------------------------------------------------------------");
+            Console.WriteLine("-------------------------------------------------------------------------------------------");
 
             for (int i = 0; i < arrayEmprestimo.Length; i++)
             {
@@ -238,7 +240,7 @@ namespace ClubeLeitura
         }
         public void ExibirEmprestimosPendentes(Emprestimo[] arrayEmprestimo)
         {
-            Console.WriteLine("\n\t # Empréstimos em Aberto\n");
+            Notificador.ApresentarTitulo("\n\t #2 Empréstimos com devolução Pendente\n");
             Console.WriteLine("{0,-5} | {1,-10} | {2,-8} | {3,-20} | {4,-20} | {5,-10}", "ID", "Amigo", "Revista", "Data Emprestimo", "Data Devolução", "Status Devolução");
             Console.WriteLine("---------------------------------------------------------------------------------");
 
@@ -268,12 +270,25 @@ namespace ClubeLeitura
 
             }
         }
-
         public void ExibirEmprestimosMes(Emprestimo[] arrayEmprestimo)
         {
+            Notificador.ApresentarTitulo("\n\t #3 Filtrar Empréstimos por Mês\n");
+
+            string[] meses = new string[] { "Janeiro", "Fevereiro", "Março", "Abril", 
+                "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+
             bool emprestimoExiste = false;
-            Console.WriteLine("Digite o Mês [ex: 03]: ");
-            int mes = int.Parse(Console.ReadLine());
+            int mes;
+            Console.Write("Digite o Mês [exemplo: 3]: ");
+            mes = int.Parse(Console.ReadLine());
+            
+            while(mes > 12)
+            {
+                Console.Write("Digite o Mês [exemplo: 3]: ");
+                mes = int.Parse(Console.ReadLine());
+            }
+
+            Console.WriteLine("Mês Selecionado: " + meses[mes-1] +"\n");
 
             for (int i = 0; i < arrayEmprestimo.Length; i++)
             {

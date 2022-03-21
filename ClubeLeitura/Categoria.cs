@@ -13,7 +13,7 @@ namespace ClubeLeitura
             string nomeCategoria;
             int quantidadeDiasEmprestimo;
 
-            Console.WriteLine("Cadastrar Categoria");
+           Notificador.ApresentarTitulo("\n1 - Cadastrar Categoria");
 
             Console.Write("Nome: ");
             nomeCategoria = Console.ReadLine();
@@ -38,29 +38,40 @@ namespace ClubeLeitura
         public void ExibirCategorias(Categoria[] arrayCategoria)
         {
 
-            Console.WriteLine("Exibir Categoria");
+            Notificador.ApresentarTitulo("\n2 - Visualizar Categorias");
+
             if (arrayCategoria[0] == null)
             {
-                Console.WriteLine("Não há categorias");
+                Notificador.ApresentarMensagem("Não há categorias", ConsoleColor.Yellow);
             }
-            for (int i = 0; i < arrayCategoria.Length; i++)
+            else
             {
-                if (arrayCategoria[i] == null)
+                Console.WriteLine("{0,-10} | {1,-20} | {2,-10}", "ID", "Nome", "Dias de Emprestimo");
+                Console.WriteLine("______________________________________________________");
+                for (int i = 0; i < arrayCategoria.Length; i++)
                 {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine(arrayCategoria[i].idCategoria + " " + arrayCategoria[i].nomeCategoria + " " + arrayCategoria[i].quantidadeDiasEmprestimo);
+                    if (arrayCategoria[i] == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0,-10} | {1,-20} | {2,-10}", arrayCategoria[i].idCategoria, arrayCategoria[i].nomeCategoria, arrayCategoria[i].quantidadeDiasEmprestimo);
+                    }
                 }
             }
+            Console.WriteLine("\nDigite qualquer tecla para retornar ao Menu");
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void ExibirRevistasPorCategoria(Categoria[] arrayCategoria, Revista[] arrayRevista)
         {
+            Notificador.ApresentarTitulo("\n3 - Visualizar Revistas por Categoria");
+
             bool categoriaExiste = false;
             int id;
-            Console.WriteLine("Digite o id da categoria");
+            Console.Write("ID da Categoria: ");
             id = int.Parse(Console.ReadLine());
 
             if (arrayCategoria[0] == null)
@@ -101,6 +112,9 @@ namespace ClubeLeitura
             {
                 Notificador.ApresentarMensagem("Categoria não existe", ConsoleColor.Red);
             }
+
+            Console.WriteLine("\nDigite qualquer tecla para retornar ao Menu");
+
             Console.ReadLine();
             Console.Clear();
 

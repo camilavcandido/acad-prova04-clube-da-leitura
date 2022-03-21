@@ -8,10 +8,11 @@ namespace ClubeLeitura
         public int numero;
         public void CadastrarCaixa(Caixa[] arrayCaixa, ref int indiceCaixa, ref int controlaNumeroCaixa)
         {
-            Notificador.ApresentarMensagem("\n\t1 - Cadastrar Caixa", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n1 - Cadastrar Caixa");
 
             string corCaixa, etiquetaCaixa;
-            Console.ForegroundColor = ConsoleColor.Blue;
+
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine("Número da Caixa: " + controlaNumeroCaixa);
             Console.ResetColor();
 
@@ -35,10 +36,10 @@ namespace ClubeLeitura
 
         }
 
-        public void ExibirCaixasCadastradas(Caixa[] arrayCaixa)
+        public void ExibirCaixas(Caixa[] arrayCaixa)
         {
           
-            Notificador.ApresentarMensagem("\n\t2 - Visualizar as Caixas Cadastradas", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n2 - Visualizar as Caixas Cadastradas");
 
             if (arrayCaixa[0] == null)
             {
@@ -62,11 +63,11 @@ namespace ClubeLeitura
                     }
                 }
             }
+
+            Console.WriteLine("\nDigite qualquer tecla para retornar ao Menu");
             Console.ReadLine();
             Console.Clear();
         }
 
     }
-
-
 }

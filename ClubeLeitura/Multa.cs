@@ -10,29 +10,37 @@ namespace ClubeLeitura
 
         public void ExibirMultas(Multa[] arrayMulta, Emprestimo[] arrayEmprestimo, Amigo[] arrayAmigo)
         {
+            Notificador.ApresentarTitulo("\n1 - Visualizar Todas as Multas");
+
             if (arrayMulta[0] == null)
             {
-                Console.Write("nao ha multas");
+                Notificador.ApresentarMensagem("Não há multas", ConsoleColor.Yellow);
             }
             else
             {
+                Console.WriteLine("{0,-10} | {1,-10} | {2,-10} ", "ID", "Amigo", "Status da Multa");
                 for (int i = 0; i < arrayMulta.Length; i++)
                 {
                     if (arrayMulta[i] != null)
                     {
-
-                        Console.Write(arrayMulta[i].idMulta + "" + arrayMulta[i].emprestimo.nome.nomeAmigo + "" + arrayMulta[i].statusMulta);
+                        Console.WriteLine("{0,-10} | {1,-10} | {2,-10} ", arrayMulta[i].idMulta, arrayMulta[i].emprestimo.nome.nomeAmigo, arrayMulta[i].statusMulta);
                     }
                 }
             }
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void QuitarMulta(Multa[] arrayMulta, Amigo[] arrayAmigo, Emprestimo[] arrayEmprestimo)
         {
-            Console.WriteLine("ID DA MULTA: ");
+            bool multaExiste = false;
+            Notificador.ApresentarTitulo("\n4 - Quitar Multa");
+
+
+            Console.Write("ID da Multa: ");
             int idMulta = int.Parse(Console.ReadLine());
 
-            //array multa
+          
             for (int i = 0; i < arrayMulta.Length; i++)
             {
                 if (arrayMulta[i] == null)
@@ -49,6 +57,7 @@ namespace ClubeLeitura
                         }
                         else if (arrayMulta[i] != null && arrayMulta[i].idMulta == idMulta)
                         {
+                            multaExiste = true;
                             arrayMulta[i].idMulta = 0;
                             arrayMulta[i].statusMulta = false;
                             for(int a = 0; a < arrayAmigo.Length; a++)
@@ -66,12 +75,22 @@ namespace ClubeLeitura
                 }
 
             }
+            if (multaExiste)
+            {
+            Notificador.ApresentarMensagem("Multa quitada!", ConsoleColor.Green);
 
-
+            } else if (multaExiste == false)
+            {
+                Notificador.ApresentarMensagem("Multa não encontrada", ConsoleColor.DarkRed);
+            }
+            Console.ReadLine();
+            Console.Clear();
         }
 
         public void ExibirAmigosComMulta(Amigo[] arrayAmigo)
         {
+            Notificador.ApresentarTitulo("\n2 -  Visualizar amigos com multa em aberto");
+
             bool ExisteAmigoComMulta = false;
             Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço", "Multa");
             Console.WriteLine("---------------------------------------------------------------------------------");
@@ -93,6 +112,8 @@ namespace ClubeLeitura
             {
                 Notificador.ApresentarMensagem("Não há amigo com multa em aberto", ConsoleColor.Green);
             }
+            Console.ReadLine();
+            Console.Clear();
 
         }
 

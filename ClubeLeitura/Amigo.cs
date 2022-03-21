@@ -14,9 +14,11 @@ namespace ClubeLeitura
         {
             string nomeAmigo, nomeResponsavelAmigo, telefoneAmigo, enderecoAmigo;
 
-            Notificador.ApresentarMensagem("\n\t5 - Cadastrar Amigo", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n1 - Cadastrar Amigo");
 
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.WriteLine("ID: " + controlaIdAmigo);
+            Console.ResetColor();
 
             Console.Write("Nome: ");
             nomeAmigo = Console.ReadLine();
@@ -37,6 +39,7 @@ namespace ClubeLeitura
 
             indiceAmigo++;
             controlaIdAmigo++;
+
             Notificador.ApresentarMensagem("Amigo cadastrado com sucesso!", ConsoleColor.Green);
             Console.ReadLine();
             Console.Clear();
@@ -45,7 +48,7 @@ namespace ClubeLeitura
 
         public void ExibirAmigosCadastrados(Amigo[] arrayAmigo)
         {
-            Notificador.ApresentarMensagem("\n\t 2 - Visualizar os Amigos Cadastrados", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n2 - Visualizar os Amigos Cadastrados");
             if (arrayAmigo[0] == null)
             {
                 Notificador.ApresentarMensagem("Não há amigos cadastrados", ConsoleColor.Yellow);
@@ -68,14 +71,15 @@ namespace ClubeLeitura
                         break;
                 }
             }
-                Console.ReadLine();
-                Console.Clear();
-            
+            Console.ReadLine();
+
         }
 
         public void ExibirAmigos(Amigo[] arrayAmigo)
         {
-            Console.WriteLine("Todos os Amigos Cadastrados: \n");
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("\n#1 Todos os Amigos Cadastrados:\n");
+            Console.ResetColor();
             Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço", "Multa");
             Console.WriteLine("---------------------------------------------------------------------------------");
             for (int i = 0; i < arrayAmigo.Length; i++)
@@ -91,11 +95,14 @@ namespace ClubeLeitura
 
                 }
             }
+            Console.WriteLine("\nDigite qualquer tecla para retornar ao Menu");
         }
 
         public void ExibirAmigosComMulta(Amigo[] arrayAmigo)
         {
             bool ExisteAmigoComMulta = false;
+            Console.WriteLine("\n#2 Amigos com Multa em Aberto:\n");
+
             Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", "ID", "Nome", "Responsavel", "Telefone", "Endereço", "Multa");
             Console.WriteLine("---------------------------------------------------------------------------------");
             for (int i = 0; i < arrayAmigo.Length; i++)
@@ -104,18 +111,21 @@ namespace ClubeLeitura
                 {
                     break;
                 }
-                else if(arrayAmigo[i]!=null & arrayAmigo[i].possuiMulta == true)
+                else if(arrayAmigo[i]!= null & arrayAmigo[i].possuiMulta == true)
                 {
                     ExisteAmigoComMulta = true;
                     Console.WriteLine("{0,-10} | {1,-10} | {2,-15} | {3,-10} | {4,-10} | {5,-10}", arrayAmigo[i].idAmigo,
                         arrayAmigo[i].nomeAmigo, arrayAmigo[i].nomeResponsavel, arrayAmigo[i].telefone, arrayAmigo[i].endereco, arrayAmigo[i].possuiMulta);
-
+                    break;
                 }
             }
             if(ExisteAmigoComMulta == false)
             {
                 Notificador.ApresentarMensagem("Não há amigo com multa em aberto", ConsoleColor.Green);
             }
+
+            Console.ReadLine();
+            Console.Clear();
 
         }
     }

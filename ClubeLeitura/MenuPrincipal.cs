@@ -14,7 +14,6 @@ namespace ClubeLeitura
 
             SubMenu subMenu = new SubMenu();
 
-
             do
             {
 
@@ -23,31 +22,24 @@ namespace ClubeLeitura
                 switch (opcaoMenu)
                 {
                     case "1":
-                        Console.Clear();
                         subMenu.TelaRevista();
                         break;
                     case "2":
-                        Console.Clear();
                         subMenu.TelaCaixa();
                         break;
                     case "3":
-                        Console.Clear();
                         subMenu.TelaAmigo();
                         break;
                     case "4":
-                        Console.Clear();
                         subMenu.TelaEmprestimo();
                         break;
                     case "5":
-                        Console.Clear();
                         subMenu.TelaReserva();
                         break;
                     case "6":
-                        Console.Clear();
                         subMenu.TelaCategoria();
                         break;
                     case "7":
-                        Console.Clear();
                         subMenu.TelaMulta();
                         break;
                     default:
@@ -59,18 +51,21 @@ namespace ClubeLeitura
 
         public static string OpcoesDoMenu()
         {
-            Notificador.ApresentarMensagem("\tClube da Leitura", ConsoleColor.Cyan);
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Notificador.ApresentarMensagem("Clube da Leitura", ConsoleColor.White);
+            Console.ResetColor();
             string opcaoMenu;
-            Console.WriteLine("" +
-                "\n1 - REVISTAS" +
-                "\n2 - CAIXAS" +
-                "\n3 - AMIGOS" +
-                "\n4 - EMPRESTIMOS" +
-                "\n5 - RESERVAS" +
-                "\n6 - CATEGORIAS" +
-                "\n7 - MULTAS");
-
-            Notificador.ApresentarMensagem("Escolha uma opção: ", ConsoleColor.Blue);
+            Console.WriteLine("Gerenciamento: " +
+                "\n| 1 - Revistas" +
+                "\n| 2 - Caixas" +
+                "\n| 3 - Amigos" +
+                "\n| 4 - Emprestimos" +
+                "\n| 5 - Reservas" +
+                "\n| 6 - Categorias" +
+                "\n| 7 - Multas");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("Escolha uma opção: ");
+            Console.ResetColor();
             opcaoMenu = Console.ReadLine();
             return opcaoMenu;
         }

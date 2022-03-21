@@ -21,9 +21,7 @@ namespace ClubeLeitura
             bool categoriaExiste = false;
             #endregion
 
-            ApresentaMensagem("\n\t1 - Cadastrar Revista", ConsoleColor.Cyan);
-
-
+            Notificador.ApresentarTitulo("\n1 - Cadastrar Revista");
 
             Console.Write("Coleção: ");
             tipoColecaoRevista = Console.ReadLine();
@@ -38,10 +36,9 @@ namespace ClubeLeitura
             revista.numeroEdicaoRevista = numeroEdicaoRevista;
             revista.anoRevista = anoRevista;
 
-
             while (caixaExiste == false)
             {
-                Console.WriteLine("Número da Caixa: ");
+                Console.Write("Número da Caixa: ");
                 numeroCaixa = int.Parse(Console.ReadLine());
 
                 for (int i = 0; i < arrayCaixa.Length; i++)
@@ -59,7 +56,7 @@ namespace ClubeLeitura
 
             while (categoriaExiste == false)
             {
-                Console.WriteLine("ID da categoria: ");
+                Console.Write("ID da categoria: ");
                 idCategoria = int.Parse(Console.ReadLine());
 
                 for (int i = 0; i < arrayCategoria.Length; i++)
@@ -77,15 +74,13 @@ namespace ClubeLeitura
 
             }
 
-
             arrayRevista[indiceRevista] = revista;
 
 
             controlaIdRevista++;
             indiceRevista++;
-            
 
-            ApresentaMensagem("Revista cadastrada com sucesso!", ConsoleColor.Green);
+            Notificador.ApresentarMensagem ("Revista cadastrada com sucesso!", ConsoleColor.Green);
 
             Console.ReadLine();
             Console.Clear();
@@ -93,18 +88,18 @@ namespace ClubeLeitura
 
         public void ExibirRevistasCadastradas(Revista[] arrayRevista)
         {
-            ApresentaMensagem("\n\t2 - Visualizar as Revistas Cadastradas", ConsoleColor.Cyan);
+            Notificador.ApresentarTitulo("\n2 - Visualizar as Revistas Cadastradas");
 
             if (arrayRevista[0] == null)
             {
-                ApresentaMensagem("Não há revistas cadastradas", ConsoleColor.Yellow);
+                Notificador. ApresentarMensagem("Não há revistas cadastradas", ConsoleColor.Yellow);
             }
             else
             {
 
-                Console.WriteLine("{0,-5} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10}", "ID", "Coleção", "Edição", "Ano", "Caixa", "Catteogira");
+                Console.WriteLine("{0,-5} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10}", "ID", "Coleção", "Edição", "Ano", "Caixa", "Categoria");
 
-                Console.WriteLine("-----------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------------------------");
 
                 for (int i = 0; i < arrayRevista.Length; i++)
                 {
@@ -126,15 +121,5 @@ namespace ClubeLeitura
           
         }
 
-        public void ApresentaMensagem(string mensagem, ConsoleColor cor)
-        {
-            Console.ForegroundColor = cor;
-            Console.WriteLine(mensagem);
-            Console.ResetColor();
-
-        }
-
     }
-
-
 }
